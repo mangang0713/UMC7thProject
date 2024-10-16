@@ -4,7 +4,7 @@ const UpComing = () => {
   return (
     <MovieComponent
       endpoint={
-        "https://api.themoviedb.org/3/movie/up_coming?language=ko-KR&page=1"
+        "https://api.themoviedb.org/3/movie/upcoming?language=ko-KR&page=1"
       }
     />
   );
