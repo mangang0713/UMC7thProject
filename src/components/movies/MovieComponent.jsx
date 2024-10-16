@@ -8,11 +8,16 @@ const MovieComponent = ({ endpoint }) => {
   useEffect(() => {
     const getMovies = async () => {
       try {
-        const response = await axios.get(endpoint, {
-          headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZDJmNjg2NjRmOTkyMzEwZGNhNmZkNmUzYzVlZDFiMCIsIm5iZiI6MTcyODcxNjk4OS4zMzUyNTMsInN1YiI6IjY3MGExZjgzM2JiNDU1N2M2NjlhZjcwZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.B0j1nminh6oHHQScoUgVirbKhuJVudWU0PQxOl4bmok`,
-          },
-        });
+        const response = await axios.get(
+          `${
+            import.meta.env.VITE_MOVIE_API_URL
+          }${endpoint}?language=ko-KR&page=1`,
+          {
+            headers: {
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZDJmNjg2NjRmOTkyMzEwZGNhNmZkNmUzYzVlZDFiMCIsIm5iZiI6MTcyOTA2NDk4Ny42MjcwNTcsInN1YiI6IjY3MGExZjgzM2JiNDU1N2M2NjlhZjcwZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4D6Afna_UCClTvqn0PKMbTnczBC_Io6I9CslOaO3aoY`,
+            },
+          }
+        );
         setMovies(response.data.results);
       } catch (error) {
         console.error("데이터 가져오기 실패 : ", error);
@@ -23,7 +28,7 @@ const MovieComponent = ({ endpoint }) => {
   }, [endpoint]);
   return (
     <MovieBox>
-      {movies.map((movie) => (
+      {movies?.map((movie) => (
         <Movie key={movie.id}>
           <MovieImage
             src={"https://image.tmdb.org/t/p/w500" + movie.poster_path}
