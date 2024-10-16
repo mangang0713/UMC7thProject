@@ -14,7 +14,7 @@ const MovieComponent = ({ endpoint }) => {
           }${endpoint}?language=ko-KR&page=1`,
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZDJmNjg2NjRmOTkyMzEwZGNhNmZkNmUzYzVlZDFiMCIsIm5iZiI6MTcyOTA2NDk4Ny42MjcwNTcsInN1YiI6IjY3MGExZjgzM2JiNDU1N2M2NjlhZjcwZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4D6Afna_UCClTvqn0PKMbTnczBC_Io6I9CslOaO3aoY`,
+              Authorization: `Bearer ${import.meta.env.REACT_APP_BEARER_TOKEN}`,
             },
           }
         );
