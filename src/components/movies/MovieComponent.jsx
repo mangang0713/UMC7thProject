@@ -1,31 +1,18 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-import axios from "axios";
+import useCustomFetch from "../../hooks/useCustomFetch";
+import Loading from "../ui/LoadingComponent";
+import ErrorComponent from "../ui/ErrorComponent";
 
 const MovieComponent = ({ endpoint }) => {
-  const [movies, setMovies] = useState([]);
+  const { data: movies, isLoading, isError } = useCustomFetch(endpoint);
 
-  useEffect(() => {
-    const getMovies = async () => {
-      try {
-        const response = await axios.get(
-          `${
-            import.meta.env.VITE_MOVIE_API_URL
-          }${endpoint}?language=ko-KR&page=1`,
-          {
-            headers: {
-              Authorization: `Bearer ${import.meta.env.REACT_APP_BEARER_TOKEN}`,
-            },
-          }
-        );
-        setMovies(response.data.results);
-      } catch (error) {
-        console.error("데이터 가져오기 실패 : ", error);
-      }
-    };
+  if (isLoading) {
+    return <Loading />;
+  }
 
-    getMovies();
-  }, [endpoint]);
+  if (isError) {
+    return <ErrorComponent />;
+  }
   return (
     <MovieBox>
       {movies?.map((movie) => (
