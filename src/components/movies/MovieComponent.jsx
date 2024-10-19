@@ -2,10 +2,14 @@ import styled from "styled-components";
 import useCustomFetch from "../../hooks/useCustomFetch";
 import Loading from "../ui/LoadingComponent";
 import ErrorComponent from "../ui/ErrorComponent";
+import { useNavigate } from "react-router-dom";
 
 const MovieComponent = ({ endpoint }) => {
   const { data: movies, isLoading, isError } = useCustomFetch(endpoint);
-
+  const navigate = useNavigate();
+  const handleClickImage = (movie) => {
+    navigate(`/movie/${movie.id}`);
+  };
   if (isLoading) {
     return <Loading />;
   }
@@ -15,11 +19,12 @@ const MovieComponent = ({ endpoint }) => {
   }
   return (
     <MovieBox>
-      {movies?.map((movie) => (
+      {movies.results?.map((movie) => (
         <Movie key={movie.id}>
           <MovieImage
             src={"https://image.tmdb.org/t/p/w500" + movie.poster_path}
             alt={movie.title}
+            onClick={() => handleClickImage(movie)}
           />
           <MovieTitle>{movie.title}</MovieTitle>
           <MovieReleaseDate>{movie.release_date}</MovieReleaseDate>

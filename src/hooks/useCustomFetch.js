@@ -13,7 +13,7 @@ const useCustomFetch = (endpoint) => {
         const data = await axiosInstance.get(
           `${endpoint}?language=ko-KR&page=1`
         );
-        setData(data.data.results);
+        setData(data.data);
       } catch (error) {
         setIsError(true);
         console.log(error);
