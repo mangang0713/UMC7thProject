@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
+
 const Login = () => {
   const schema = yup.object().shape({
     email: yup
@@ -51,7 +52,9 @@ const Login = () => {
             },
           })}
         />
-        <LoginErrorMessage>{errors.email?.message}</LoginErrorMessage>
+        <LoginErrorMessage hasError={!!errors.email}>
+          {errors.email?.message}
+        </LoginErrorMessage>
       </InputDiv>
       <InputDiv>
         <LoginInput
@@ -63,7 +66,9 @@ const Login = () => {
             },
           })}
         />
-        <LoginErrorMessage>{errors.password?.message}</LoginErrorMessage>
+        <LoginErrorMessage hasError={!!errors.password}>
+          {errors.password?.message}
+        </LoginErrorMessage>
       </InputDiv>
 
       <LoginSubmit type="submit" disabled={!isFormValid()}>
@@ -87,6 +92,7 @@ const InputDiv = styled.div`
   flex-direction: column;
   align-items: start;
 `;
+
 const LoginInput = styled.input`
   display: flex;
   flex-direction: column;
@@ -102,8 +108,9 @@ const LoginInput = styled.input`
 const LoginErrorMessage = styled.p`
   color: red;
   font-size: 10px;
-  display: flex;
-  align-items: start;
+  height: 12px;
+  margin-top: 5px;
+  visibility: ${({ hasError }) => (hasError ? "visible" : "hidden")};
 `;
 
 const LoginSubmit = styled.button`
