@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
 import { useState } from "react";
+import { AiOutlineEye } from "react-icons/ai";
 
 const SignUp = () => {
   const schema = yup.object().shape({
@@ -15,6 +16,10 @@ const SignUp = () => {
       .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
       .max(16, "비밀번호는 최대 16자 이하여야 합니다.")
       .required("비밀번호를 입력해주세요."),
+    passwordConfirm: yup
+      .string()
+      .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
+      .required("비밀번호 확인을 입력해주세요."),
   });
 
   const {
@@ -27,22 +32,9 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const [passwordConfirmError, setPasswordConfirmError] = useState("");
-
   const onSubmit = (data) => {
     console.log("폼 데이터 제출");
     console.log(data);
-  };
-
-  const handlePasswordConfirmChange = () => {
-    const password = watch("password");
-    const passwordConfirm = watch("passwordConfirm");
-
-    if (password !== passwordConfirm) {
-      setPasswordConfirmError("비밀번호가 일치하지 않습니다.");
-    } else {
-      setPasswordConfirmError("");
-    }
   };
 
   const isFormValid = () => {
@@ -52,7 +44,7 @@ const SignUp = () => {
       !watch("passwordConfirm") ||
       errors.email ||
       errors.password ||
-      passwordConfirmError
+      errors.passwordConfirm
     );
   };
 
@@ -73,15 +65,19 @@ const SignUp = () => {
         </SignUpErrorMessage>
       </InputDiv>
       <InputDiv>
-        <SignUpInput
-          placeholder="비밀번호를 입력해주세요!"
-          type={`password`}
-          {...register("password", {
-            onChange: () => {
-              trigger("password");
-            },
-          })}
-        />
+        <PasswordDiv>
+          <SignUpInput
+            placeholder="비밀번호를 입력해주세요!"
+            type={`password`}
+            {...register("password", {
+              onChange: () => {
+                trigger("password");
+              },
+            })}
+          />
+          <OpenPassword src={AiOutlineEye} />
+        </PasswordDiv>
+
         <SignUpErrorMessage hasError={!!errors.password}>
           {errors.password?.message}
         </SignUpErrorMessage>
@@ -91,11 +87,13 @@ const SignUp = () => {
           placeholder="비밀번호를 다시 입력해주세요!"
           type={`password`}
           {...register("passwordConfirm", {
-            onChange: handlePasswordConfirmChange,
+            onChange: () => {
+              trigger("passwordConfirm");
+            },
           })}
         />
-        <SignUpErrorMessage hasError={!!passwordConfirmError}>
-          {passwordConfirmError}
+        <SignUpErrorMessage hasError={!!errors.passwordConfirm}>
+          {errors.passwordConfirm?.message}
         </SignUpErrorMessage>
       </InputDiv>
 
@@ -120,6 +118,14 @@ const InputDiv = styled.div`
   flex-direction: column;
   align-items: start;
 `;
+
+const PasswordDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const OpenPassword = styled.img``;
+
 const SignUpInput = styled.input`
   display: flex;
   flex-direction: column;
@@ -147,5 +153,5 @@ const SignUpSubmit = styled.button`
   padding-left: 30px;
   border-color: ${({ disabled }) => (disabled ? "gray" : "pink")};
   background-color: ${({ disabled }) => (disabled ? "gray" : "pink")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;

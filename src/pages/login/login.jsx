@@ -120,5 +120,5 @@ const LoginSubmit = styled.button`
   padding-left: 30px;
   border-color: ${({ disabled }) => (disabled ? "gray" : "pink")};
   background-color: ${({ disabled }) => (disabled ? "gray" : "pink")};
-  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;
