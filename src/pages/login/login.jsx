@@ -32,8 +32,10 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const result = await loginAPI(data);
-      console.log("로그인 성공!", result);
+      const { accessToken, refreshToken } = await loginAPI(data);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      console.log("로그인 성공!", accessToken, refreshToken);
       navigate("/");
     } catch (error) {
       console.error("로그인 실패!", error);
