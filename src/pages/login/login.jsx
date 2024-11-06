@@ -2,8 +2,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
+import { loginAPI } from "../../api/constants/mainAPI";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -26,9 +30,14 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("폼 데이터 제출");
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const result = await loginAPI(data);
+      console.log("로그인 성공!", result);
+      navigate("/");
+    } catch (error) {
+      console.error("로그인 실패!", error);
+    }
   };
 
   const isFormValid = () => {

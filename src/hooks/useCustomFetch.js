@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosInstance from "../api/axios-instance";
+import axiosInstance from "../api/constants/axios-instance";
 
 const useCustomFetch = (endpoint) => {
   const [data, setData] = useState([]);

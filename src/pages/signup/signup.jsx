@@ -1,11 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as yup from "yup";
-import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
+import { registerAPI } from "../../api/constants/mainAPI";
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const schema = yup.object().shape({
     email: yup
       .string()
@@ -16,7 +19,7 @@ const SignUp = () => {
       .min(8, "비밀번호는 최소 8자 이상이어야 합니다.")
       .max(16, "비밀번호는 최대 16자 이하여야 합니다.")
       .required("비밀번호를 입력해주세요."),
-    passwordConfirm: yup
+    passwordCheck: yup
       .string()
       .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
       .required("비밀번호 확인을 입력해주세요."),
@@ -32,19 +35,25 @@ const SignUp = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("폼 데이터 제출");
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      const result = await registerAPI(data);
+      console.log("회원가입 성공!", result);
+      navigate("/login");
+    } catch (error) {
+      console.error("회원가입 실패!", error);
+    }
   };
 
   const isFormValid = () => {
     return !(
       !watch("email") ||
       !watch("password") ||
-      !watch("passwordConfirm") ||
+      !watch("passwordCheck") ||
       errors.email ||
       errors.password ||
-      errors.passwordConfirm
+      errors.passwordCheck
     );
   };
 
@@ -86,14 +95,14 @@ const SignUp = () => {
         <SignUpInput
           placeholder="비밀번호를 다시 입력해주세요!"
           type={`password`}
-          {...register("passwordConfirm", {
+          {...register("passwordCheck", {
             onChange: () => {
-              trigger("passwordConfirm");
+              trigger("passwordCheck");
             },
           })}
         />
-        <SignUpErrorMessage hasError={!!errors.passwordConfirm}>
-          {errors.passwordConfirm?.message}
+        <SignUpErrorMessage hasError={!!errors.passwordCheck}>
+          {errors.passwordCheck?.message}
         </SignUpErrorMessage>
       </InputDiv>
 
