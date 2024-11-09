@@ -26,3 +26,23 @@ export const loginAPI = async (userData) => {
     throw error;
   }
 };
+
+export const userAPI = async () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (!accessToken) {
+    throw new Error("AccessToken이 없습니다.");
+  }
+
+  try {
+    const response = await mainAPI.get("user/me", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("User 정보 불러오기 중 에러", error);
+    throw error;
+  }
+};

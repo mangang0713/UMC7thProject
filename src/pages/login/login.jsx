@@ -4,9 +4,12 @@ import styled from "styled-components";
 import * as yup from "yup";
 import { loginAPI } from "../../api/constants/mainAPI";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../components/ui/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const schema = yup.object().shape({
     email: yup
@@ -33,8 +36,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const { accessToken, refreshToken } = await loginAPI(data);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      login(accessToken, refreshToken);
       console.log("로그인 성공!", accessToken, refreshToken);
       navigate("/");
     } catch (error) {
