@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../../../public/logo.png";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../@common/AuthContext";
 import { userAPI } from "../../api/constants/mainAPI";
 
 const Navbar = () => {

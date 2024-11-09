@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../components/ui/navbar";
 import Sidebar from "../components/ui/Sidebar";
 import styled from "styled-components";
-import { AuthProvider } from "../components/ui/AuthContext";
+import { AuthProvider } from "../components/@common/AuthContext";
 
 const RootLayout = () => {
   return (

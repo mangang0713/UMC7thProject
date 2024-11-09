@@ -3,13 +3,22 @@ import useCustomFetch from "../../hooks/useCustomFetch";
 import Loading from "../ui/LoadingComponent";
 import ErrorComponent from "../ui/ErrorComponent";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-const MovieComponent = ({ endpoint }) => {
+const MovieComponent = ({ endpoint, onNoResults }) => {
   const { data: movies, isLoading, isError } = useCustomFetch(endpoint);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (movies?.results?.length === 0 && onNoResults) {
+      onNoResults(); // 검색 결과가 없으면 onNoResults 호출
+    }
+  }, [movies, onNoResults]);
+
   const handleClickImage = (movie) => {
     navigate(`/movie/${movie.id}`);
   };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -17,6 +26,7 @@ const MovieComponent = ({ endpoint }) => {
   if (isError) {
     return <ErrorComponent />;
   }
+
   return (
     <MovieBox>
       {movies.results?.map((movie) => (
@@ -61,10 +71,14 @@ const MovieImage = styled.img`
 
 const MovieTitle = styled.p`
   color: white;
+  width: 200px;
   font-size: 12px;
   font-weight: 700;
   margin: 0;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const MovieReleaseDate = styled.p`

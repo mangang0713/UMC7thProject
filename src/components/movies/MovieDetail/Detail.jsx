@@ -2,7 +2,11 @@ import styled from "styled-components";
 import useCustomFetch from "../../../hooks/useCustomFetch";
 
 const Detail = ({ movieId }) => {
-  const { data: movies, isLoading, isError } = useCustomFetch(movieId);
+  const {
+    data: movies,
+    isLoading,
+    isError,
+  } = useCustomFetch(`movie/${movieId}?language=ko-KR&page=1`);
   if (isLoading) {
     return <p>Loading...</p>;
   }

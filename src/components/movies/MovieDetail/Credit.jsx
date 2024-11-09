@@ -6,7 +6,7 @@ const Credit = ({ movieId }) => {
     data: movies,
     isLoading,
     isError,
-  } = useCustomFetch(`${movieId}/credits`);
+  } = useCustomFetch(`movie/${movieId}/credits?language=ko-KR&page=1`);
   if (isLoading) {
     return <p>Loading...</p>;
   }

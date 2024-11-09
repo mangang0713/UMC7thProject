@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { loginAPI } from "../../api/constants/mainAPI";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../components/ui/AuthContext";
+import { AuthContext } from "../../components/@common/AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();

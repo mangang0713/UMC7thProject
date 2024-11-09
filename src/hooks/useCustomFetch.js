@@ -10,9 +10,7 @@ const useCustomFetch = (endpoint) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const data = await axiosInstance.get(
-          `${endpoint}?language=ko-KR&page=1`
-        );
+        const data = await axiosInstance.get(`${endpoint}`);
         setData(data.data);
       } catch (error) {
         setIsError(true);
