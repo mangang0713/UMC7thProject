@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MovieSkeleton from "./MovieSkeleton";
+import MovieSkeleton from "../movies/MovieSkeleton";
 
 const Loading = () => {
   return (
