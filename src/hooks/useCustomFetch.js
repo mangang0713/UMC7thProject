@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react";
 import axiosInstance from "../api/constants/axios-instance";
+import { useQuery } from "@tanstack/react-query";
 
 const useCustomFetch = (endpoint) => {
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const data = await axiosInstance.get(`${endpoint}`);
-        setData(data.data);
-      } catch (error) {
-        setIsError(true);
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [endpoint]);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["fetchData", endpoint],
+    queryFn: async () => {
+      const response = await axiosInstance.get(endpoint);
+      return response.data;
+    },
+    retry: 1,
+    staleTime: Infinity,
+  });
 
   return { data, isLoading, isError };
 };
