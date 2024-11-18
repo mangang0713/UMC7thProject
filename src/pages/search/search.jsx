@@ -25,7 +25,7 @@ const Search = () => {
       {searchQuery && (
         <ResultsDiv>
           <MovieComponent
-            endpoint={`/search/movie?query=${searchQuery}&include_adult=false&language=ko-KR&page=1`}
+            endpoint={`/search/movie?query=${searchQuery}&include_adult=false&language=ko-KR`}
             onNoResults={handleNoResults}
           />
           {noResults && (

@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const MovieComponent = ({ endpoint, onNoResults }) => {
-  const { data: movies, isLoading, isError } = useCustomFetch(endpoint);
+  const { data, isLoading, isError, fetchNextPage, hasNextPage } =
+    useCustomFetch(endpoint);
   const navigate = useNavigate();
+  const movies = data?.pages?.flatMap((page) => page.results) || [];
 
   useEffect(() => {
     if (movies?.results?.length === 0 && onNoResults) {
@@ -28,19 +30,22 @@ const MovieComponent = ({ endpoint, onNoResults }) => {
   }
 
   return (
-    <MovieBox>
-      {movies.results?.map((movie) => (
-        <Movie key={movie.id}>
-          <MovieImage
-            src={"https://image.tmdb.org/t/p/w500" + movie.poster_path}
-            alt={movie.title}
-            onClick={() => handleClickImage(movie)}
-          />
-          <MovieTitle>{movie.title}</MovieTitle>
-          <MovieReleaseDate>{movie.release_date}</MovieReleaseDate>
-        </Movie>
-      ))}
-    </MovieBox>
+    <>
+      <MovieBox>
+        {movies.map((movie) => (
+          <Movie key={movie.id}>
+            <MovieImage
+              src={"https://image.tmdb.org/t/p/w500" + movie.poster_path}
+              alt={movie.title}
+              onClick={() => handleClickImage(movie)}
+            />
+            <MovieTitle>{movie.title}</MovieTitle>
+            <MovieReleaseDate>{movie.release_date}</MovieReleaseDate>
+          </Movie>
+        ))}
+      </MovieBox>
+      {hasNextPage && <button onClick={() => fetchNextPage()}>다음</button>}
+    </>
   );
 };
 

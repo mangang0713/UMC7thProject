@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import useCustomFetch from "../../../hooks/useCustomFetch";
+import useCustomDetailFetch from "../../../hooks/useCustomDetailFetch";
 
 const Credit = ({ movieId }) => {
   const {
     data: movies,
     isLoading,
     isError,
-  } = useCustomFetch(`movie/${movieId}/credits?language=ko-KR&page=1`);
+  } = useCustomDetailFetch(`movie/${movieId}/credits?language=ko-KR&page=1`);
   if (isLoading) {
     return <p>Loading...</p>;
   }
